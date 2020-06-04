@@ -27,16 +27,15 @@ def get_user_from_session_or_none():
 @app.route('/')
 def render_main():
     user = get_user_from_session_or_none()
-    # https://stackoverflow.com/questions/22876946/how-to-order-by-count-of-many-to-many-relationship-in-sqlalchemy
-    subq = (db.session.query(Recipe.id.label("recipe_id"),
-                             func.count(users_recipes_association.c.user_id).label("num_users"))
-            .outerjoin(users_recipes_association).group_by(Recipe.id)
-            ).subquery("subq")
-
-    recipes = (db.session.query(Recipe)
-               .join(subq, Recipe.id == subq.c.recipe_id)
-               .group_by(Recipe).order_by(subq.c.num_users.desc()).limit(6)
-               )
+    # SELECT recipes.*  FROM recipes
+    # LEFT JOIN users_recipes on recipes.id = users_recipes.recipe_id
+    # LEFT JOIN users on users_recipes.user_id = users.id
+    # GROUP BY recipes.id
+    # ORDER BY count(users.id) DESC
+    query = db.session.query(Recipe)
+    query = query.join(users_recipes_association, Recipe.id == users_recipes_association.c.recipe_id, isouter=True)
+    query = query.join(User, users_recipes_association.c.user_id == User.id, isouter=True)
+    recipes = query.group_by(Recipe.id).order_by(func.count(User.id).desc()).limit(6)
     return render_template('index.html', user=user, recipes=recipes)
 
 
