@@ -66,7 +66,7 @@ def render_wizard_results():
     query = query.join(recipes_ingredients_association, Recipe.id == recipes_ingredients_association.c.recipe_id)
     query = query.join(Ingredient, Ingredient.id == recipes_ingredients_association.c.ingredient_id)
     recipes = query.filter(Ingredient.id.in_((session['selected_ingredients']))). \
-        group_by(Recipe.title).order_by(func.count(Recipe.title).desc()).all()
+        group_by(Recipe.id).order_by(func.count(Recipe.title).desc()).all()
     return render_template('recipes.html', user=user, recipes=recipes)
 
 
