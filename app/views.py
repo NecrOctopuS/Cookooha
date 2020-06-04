@@ -21,7 +21,10 @@ def login_required(f):
 def get_user_from_session_or_none():
     user_id = session.get('user_id')
     if user_id:
-        return db.session.query(User).get(user_id)
+        user = db.session.query(User).get(user_id)
+        if user:
+            return user
+        session.pop("user_id")
     return None
 
 
@@ -87,10 +90,11 @@ def render_recipe(recipe_id):
 @login_required
 def add_to_favorites(recipe_id):
     user = get_user_from_session_or_none()
-    recipe = db.session.query(Recipe).get_or_404(recipe_id)
-    user.favorites.append(recipe)
-    db.session.commit()
-    flash('Блюдо добавлено в избранное.')
+    if user:
+        recipe = db.session.query(Recipe).get_or_404(recipe_id)
+        user.favorites.append(recipe)
+        db.session.commit()
+        flash('Блюдо добавлено в избранное.')
     return redirect(url_for('render_favorites'))
 
 
