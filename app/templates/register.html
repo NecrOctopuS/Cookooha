@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+
+{% block body_style %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .row .btn.rounded-pill {
+      padding: .25rem .75rem;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <main class="container mt-3 mb-5">
+    <section class="mx-auto pt-5 pb-3" style="width: 60%;"> 
+      <div class="card pr-4">
+        <form action="{{ url_for('register') }}" method="post">
+          <div class="row">
+            <div class="col-6">
+              <img src="/static/login.jpg" alt="" class="img-fluid">
+            </div>
+            <div class="col-6 py-4 px-2">
+              {% for field in form.errors %}
+              {% for error in form.errors[field] %}
+              <div class="alert alert-warning" role="alert">
+                {{error}}
+              </div>
+              {% endfor %}
+              {% endfor %}
+              <p class="h5 my-3"><b>Регистрация</b></p>
+
+              {{ form.hidden_tag() }}
+              <div class="form-group">
+                {{form.email.label(class_="text-muted")}}
+                {{form.email(class_="form-control")}}
+              </div>
+              <div class="form-group">
+                {{form.password.label(class_="text-muted")}}
+                {{form.password(class_="form-control")}}
+              </div>
+              <div class="form-group">
+                {{form.confirm_password.label(class_="text-muted")}}
+                {{form.confirm_password(class_="form-control")}}
+              </div>
+              <div class="form-group pt-2">
+                {{ form.submit(class='btn btn-dark') }}
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+{% endblock %}
