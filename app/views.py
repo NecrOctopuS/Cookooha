@@ -5,6 +5,7 @@ from app import app, db
 from app.models import User, Recipe, Ingredient, IngredientGroup, users_recipes_association, \
     recipes_ingredients_association
 from app.forms import RegistrationForm, LoginForm
+from app.config import Config
 
 
 def login_required(f):
@@ -27,6 +28,7 @@ def get_user_from_session_or_none():
 @app.route('/')
 def render_main():
     user = get_user_from_session_or_none()
+    # This query equal to
     # SELECT recipes.*  FROM recipes
     # LEFT JOIN users_recipes on recipes.id = users_recipes.recipe_id
     # LEFT JOIN users on users_recipes.user_id = users.id
@@ -35,7 +37,7 @@ def render_main():
     query = db.session.query(Recipe)
     query = query.join(users_recipes_association, Recipe.id == users_recipes_association.c.recipe_id, isouter=True)
     query = query.join(User, users_recipes_association.c.user_id == User.id, isouter=True)
-    recipes = query.group_by(Recipe.id).order_by(func.count(User.id).desc()).limit(6)
+    recipes = query.group_by(Recipe.id).order_by(func.count(User.id).desc()).limit(Config.RECIPES_PER_MAIN_PAGE)
     return render_template('index.html', user=user, recipes=recipes)
 
 

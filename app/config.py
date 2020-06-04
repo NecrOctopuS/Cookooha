@@ -13,3 +13,4 @@ class Config:
     SECRET_KEY = env.str('SECRET_KEY', 'my-super-secret-phrase-I-dont-tell-this-to-nobody')
     SQLALCHEMY_DATABASE_URI = env.str("DATABASE_URL", db_path)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    RECIPES_PER_MAIN_PAGE = env.int('RECIPES_PER_MAIN_PAGE', 6)

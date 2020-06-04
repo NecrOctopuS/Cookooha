@@ -70,9 +70,9 @@
         <h2 class="h3 py-5 mb-3 font-weight-bold">Самые популярные <br>рецепты</h2>
         <div class="row">
           {% for recipe in recipes %}
-          {% if loop.index % 3 == 0 %}
+          {% if loop.index0 % 3 == 0 or loop.index0 == 0 %}
           <div class="col-lg-4 col-sm-6 border-right pr-0">
-          {% elif loop.index % 2 == 0 %}
+          {% elif (loop.index0 + 2) % 3 == 0 %}
           <div class="col-lg-4 col-sm-6 border-right px-0">
           {% else %}
           <div class="col-lg-4 col-sm-6 pl-0">

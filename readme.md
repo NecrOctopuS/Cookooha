@@ -23,7 +23,7 @@ python3 add_data.py
 В файле `.env` или в настройках окружения создайте следующие переменные:
 ```
 SECRET_KEY='my-super-secret-phrase-I-dont-tell-this-to-nobody' #Секретный ключ проекта
-PROFILE_NUMBERS_PER_MAIN_PAGE=6 #Количество карточек на главной странице
+RECIPES_PER_MAIN_PAGE=6 #Количество карточек на главной странице
 ```
 
 
