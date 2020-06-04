@@ -25,7 +25,7 @@ class Recipe(db.Model):
     time = db.Column(db.Integer)  # время приготовления в минутах
     servings = db.Column(db.Integer)  # кол-во порций
     kcal = db.Column(db.Integer)
-    instruction = db.Column(db.String(2000))
+    instruction = db.Column(db.String(20000))
     ingredients = db.relationship("Ingredient", secondary=recipes_ingredients_association, back_populates="recipes")
     users = db.relationship("User", secondary=users_recipes_association, back_populates="favorites")
 

@@ -1,5 +1,6 @@
 import json
-from app import db, Recipe, Ingredient, IngredientGroup
+from app.models import Recipe, Ingredient, IngredientGroup
+from app import app, db
 
 
 def read_json(json_path):
@@ -53,9 +54,10 @@ def add_recipes(json_path):
 
 
 def main():
-    add_ingredient_groups('ingredient_groups.json')
-    add_ingredients('ingredients.json')
-    add_recipes('recipes.json')
+    with app.app_context():
+        add_ingredient_groups('ingredient_groups.json')
+        add_ingredients('ingredients.json')
+        add_recipes('recipes.json')
 
 
 if __name__ == '__main__':
