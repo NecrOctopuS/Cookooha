@@ -124,11 +124,11 @@ def login():
     if request.method == "POST":
         if not form.validate_on_submit():
             return render_template("login.html", form=form)
-        user = User.query.filter(User.username == form.email.data).first()
+        user = User.query.filter(User.username == form.username.data).first()
         if user and user.password_valid(form.password.data):
             session["user_id"] = user.id
             return redirect(url_for('render_main'))
-        form.email.errors.append("Неверное имя или пароль")
+        form.username.errors.append("Неверное имя или пароль")
     return render_template("login.html", form=form)
 
 
@@ -147,16 +147,19 @@ def register():
     if request.method == "POST":
         if not form.validate_on_submit():
             return render_template("register.html", form=form)
-        email = form.email.data
+        username = form.username.data
         password = form.password.data
         confirm_password = form.confirm_password.data
-        if email and password and password == confirm_password:
-            user = User(username=email, password=password)
+        user = db.session.query(User).filter(User.username == username).first()
+        if user:
+            form.username.errors.append("Такой пользователь уже существует")
+        elif username and password and password == confirm_password:
+            user = User(username=username, password=password)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('login'))
-        elif not email or not password:
-            form.email.errors.append("Не указано имя или пароль")
+        elif not username or not password:
+            form.username.errors.append("Не указано имя или пароль")
         elif password != confirm_password:
             form.confirm_password.errors.append("Введенные пароли не совпадают")
     return render_template("register.html", form=form)
