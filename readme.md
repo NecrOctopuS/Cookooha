@@ -1,7 +1,7 @@
 # Cookooha
 
 Сайт на Flask.
-Пример можно посмотреть на [Heroku](https://demo-tutors-finder-with-db.herokuapp.com/).
+Пример можно посмотреть на [Heroku](https://cookooha.herokuapp.com/).
 
 ## Запуск
 
